@@ -1,0 +1,42 @@
+server:
+    port: 8088
+
+
+
+# spring:
+#     datasource:
+#         driver-class-name: oracle.jdbc.driver.OracleDriver
+#         url: jdbc:oracle:thin:@localhost:1521/xe
+#         username: hr
+#         password: hr
+# # jpa
+#     jpa:
+#         properties:
+#             hibernate: 
+#                 dialect: orghibernate.dialect.OracleDialect
+#                 show_sql: true
+#                 format_sql: true
+#                 use_sql_comments: true
+#         hibernate: 
+#             ddl: auto=none
+
+
+
+
+spring:
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:testdb
+        username: sa
+        password: 
+    h2:
+        console:
+            enabled: true
+        # jpa
+# jpa
+    jpa:
+        
+        hibernate: 
+            ddl-auto: update
+        show-sql: true
+            
