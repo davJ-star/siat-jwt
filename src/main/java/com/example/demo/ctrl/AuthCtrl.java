@@ -2,7 +2,9 @@ package com.example.demo.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,11 +12,13 @@ import com.example.demo.domain.UserResponseDTO;
 import com.example.demo.domain.entity.UserRequestDTO;
 import com.example.demo.service.AuthService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 // @RequestMapping("/")
 @RequestMapping("/api/v1/auth")
+//@CrossOrigin(origins = "*", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> 모든 출처에서 접근 가능하다.
+
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다.
 public class AuthCtrl {
     @Autowired
     private AuthService authService; // @Autowired를 사용하여 AuthService를 주입받는다.
