@@ -1,9 +1,9 @@
 package com.example.demo.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+// import jakarta.persistence.Column;
+// import jakarta.persistence.GeneratedValue;
+// import jakarta.persistence.GenerationType;
+// import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,17 +18,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserRequestDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    @Column(name = "id") // column name을 자동으로 생성한다. -> @Column(name = "user_id")로 변경 가능하다.
-    private Long id; // ID
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
+    //@Column(name = "id") // column name을 자동으로 생성한다. -> @Column(name = "user_id")로 변경 가능하다.
+    // private Long id; // ID
 
-    @Column(name = "name") // column name을 자동으로 생성한다. -> @Column(name = "user_name")로 변경 가능하다.
+    //@Column(name = "name") // column name을 자동으로 생성한다. -> @Column(name = "user_name")로 변경 가능하다.
     private String email; // email
 
-    @Column(name = "password") // column name을 자동으로 생성한다. -> @Column(name = "user_password")로 변경 가능하다.
+    //@Column(name = "password") // column name을 자동으로 생성한다. -> @Column(name = "user_password")로 변경 가능하다.
     private String pwd; // password
 
-    @Column(name = "access_token") // column name을 자동으로 생성한다. -> @Column(name = "user_token")로 변경 가능하다.
-    private String accessToken; // token
+    //@Column(name = "access_token") // column name을 자동으로 생성한다. -> @Column(name = "user_token")로 변경 가능하다.
+    // private String accessToken; // token
 }
