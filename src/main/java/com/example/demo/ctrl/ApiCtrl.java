@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다.
+@CrossOrigin(origins = "*") // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다.
 public class ApiCtrl {
     @PostMapping("/hello") // @RequestMapping("/hello")과 @PostMapping("/hello")은 같은 의미이다.
     // 현재 endpoint는 /api/v1/hello이다.
-    public ResponseEntity<UserResponseDTO> hello(@RequestBody String params) {
+    public String hello(@RequestBody String params) {
         //TODO: process POST request
         System.out.println("debug >> Hello(ctrl) endpoint hit");
         System.out.println("debug >> Hello(ctrl) params : " + params.toString());
-        return null;
+        return "Hello, " + params.toString(); // ResponseEntity를 반환한다.
     }
     
 }

@@ -111,9 +111,11 @@ public class JwtFilter implements Filter {
                 path.startsWith("/v3/api-docs") || 
                 path.startsWith("/swagger-resources") || 
                 path.startsWith("/swagger-ui") || 
+                path.startsWith("/api") ||  
                 path.startsWith("/h2-console") ||    
                 path.startsWith("/auth"); 
             // auth/login 또는 auth/register인 경우, JWT 검증을 건너뜁니다.
     }
     
 }
+/*http://localhost:8088/api/v1/hello */
