@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ApiCtrl {
     @GetMapping("/hello") // @RequestMapping("/hello")과 @PostMapping("/hello")은 같은 의미이다.
     // 현재 endpoint는 /api/v1/hello이다.
-    public String hello(@RequestBody String params) {
+    public String hello() {
         //TODO: process POST request
         System.out.println("debug >> Hello(ctrl) endpoint hit");
-        System.out.println("debug >> Hello(ctrl) params : " + params.toString());
-        return null; // ResponseEntity를 반환한다.
+        return "success"; // ResponseEntity를 반환한다.
     }
     
 }
