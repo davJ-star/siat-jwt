@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.security.Key;
 
 import org.springframework.stereotype.Component;
-
+import com.example.demo.ctrl.ApiCtrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.Filter;
@@ -19,7 +19,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 // @Order(1) // 필터의 순서를 지정합니다. 숫자가 낮을수록 우선순위가 높습니다.
 public class JwtFilter implements Filter {
-    private final Key key = Keys.hmacShaKeyFor("siat-very-very-important-secret-key".getBytes()); // JWT 서명 키를 설정합니다.
+
+    private final ApiCtrl apiCtrl;
+    private final Key key = Keys.hmacShaKeyFor("siat-very-very-important-secret-key".getBytes());
+
+    JwtFilter(ApiCtrl apiCtrl) {
+        this.apiCtrl = apiCtrl;
+    } // JWT 서명 키를 설정합니다.
 
     // JWT 필터 구현
     // JWT를 검증하고, 유효한 경우 요청을 처리하도록 설정합니다.
@@ -45,6 +51,16 @@ public class JwtFilter implements Filter {
 
         String path = req.getRequestURI(); // 요청 URI를 가져옵니다.
         System.out.println("debug >> JwtFilter path : " + path);
+        String method = req.getMethod(); // 요청 메소드를 가져옵니다.
+        System.out.println("debug >> JwtFilter client method : " + method);
+        if ("OPTIONS".equalsIgnoreCase(method)) { // OPTIONS 메소드인 경우, CORS 요청을 처리합니다.
+            System.out.println("debug >> JwtFilter client method is OPTIONS");
+            res.setStatus(res.SC_OK); // 200 OK 응답을 반환합니다.
+            return; // 요청을 종료합니다.
+        } else {
+            System.out.println("debug >> [JWT 검증을 수행] JwtFilter client method is not OPTIONS"); // JWT 검증을 수행합니다.
+            
+        }
 
 
         // 패스가 /swagger-ui 또는 /v3/api-docs인 경우, JWT 검증을 건너뜁니다.
@@ -64,6 +80,14 @@ public class JwtFilter implements Filter {
 
         // 필요없는 정보를 체크해야한다.
 
+        // 안되는 경우 체크해야한다. filter에서 다 걸려줘서 cors자체로 체크가 안되는 중.... 일단 filter에서 해당 작업을 체크해줘야한다. 
+        
+        // 브라우저 요청(post, put, get, delete) 요청전에, 자동으로 Options(preflight request)를 보내서, 서버에서 허용하는지 체크한다.
+        // 서버에서 허용하지 않으면, 브라우저에서 요청을 보내지 않는다. 
+        // 서버에서 허용하면, 브라우저에서 요청을 보낸다.
+
+        
+
         // auth Header가 null이거나, Bearer로 시작하지 않는 경우, 요청을 거부합니다.
         // auth Header에 담아서 jwt를 보내야하기 때문에! 또는 Bearer
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -73,6 +97,7 @@ public class JwtFilter implements Filter {
             // res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"); // 401 Unauthorized 응답을 반환합니다.
             // return; // 요청을 종료합니다.
         }
+        
         
         // 404 에러
         // 403 에러
@@ -111,7 +136,7 @@ public class JwtFilter implements Filter {
                 path.startsWith("/v3/api-docs") || 
                 path.startsWith("/swagger-resources") || 
                 path.startsWith("/swagger-ui") || 
-                path.startsWith("/api") ||  
+                //path.startsWith("/api") ||  
                 path.startsWith("/h2-console") ||    
                 path.startsWith("/auth"); 
             // auth/login 또는 auth/register인 경우, JWT 검증을 건너뜁니다.
