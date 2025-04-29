@@ -2,12 +2,15 @@ package com.example.demo.filter;
 
 // import io.jsonwebtoken.io.IOException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.example.demo.ctrl.ApiCtrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,18 +18,24 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import oracle.jdbc.proxy.annotation.Post;
+import oracle.net.aso.c;
 
 @Component
 // @Order(1) // 필터의 순서를 지정합니다. 숫자가 낮을수록 우선순위가 높습니다.
 public class JwtFilter implements Filter {
 
-    private final ApiCtrl apiCtrl;
-    private final Key key = Keys.hmacShaKeyFor("siat-very-very-important-secret-key".getBytes());
+    // private final Key key = Keys.hmacShaKeyFor("siat-very-very-important-secret-key".getBytes(StandardCharsets.UTF_8)); // 서명 알고리즘 설정; // JWT 서명에 사용할 키
+    @Value("${jwt.secret}") // application.properties에 설정된 jwt.secret.key 값을 주입받습니다.
+    private String secret; // JWT 서명에 사용할 키
+    private Key key = null;
 
-    JwtFilter(ApiCtrl apiCtrl) {
-        this.apiCtrl = apiCtrl;
-    } // JWT 서명 키를 설정합니다.
-
+    @PostConstruct // 생성자에서 JWT 서명 키를 초기화합니다.
+    public void init() {
+        // key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)); // JWT 서명에 사용할 키를 가져옵니다.
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)); // JWT 서명에 사용할 키를 가져옵니다.
+    }
+   
     // JWT 필터 구현
     // JWT를 검증하고, 유효한 경우 요청을 처리하도록 설정합니다.
     // JWT가 유효하지 않은 경우, 요청을 거부합니다.
@@ -53,21 +62,36 @@ public class JwtFilter implements Filter {
         System.out.println("debug >> JwtFilter path : " + path);
         String method = req.getMethod(); // 요청 메소드를 가져옵니다.
         System.out.println("debug >> JwtFilter client method : " + method);
-        if ("OPTIONS".equalsIgnoreCase(method)) { // OPTIONS 메소드인 경우, CORS 요청을 처리합니다.
-            System.out.println("debug >> JwtFilter client method is OPTIONS");
-            res.setStatus(res.SC_OK); // 200 OK 응답을 반환합니다.
-            return; // 요청을 종료합니다.
-        } else {
-            System.out.println("debug >> [JWT 검증을 수행] JwtFilter client method is not OPTIONS"); // JWT 검증을 수행합니다.
-            
+
+        if ("OPTIONS".equalsIgnoreCase(method)) {
+            // res.setStatus(HttpServletResponse.SC_OK);
+            // res.setHeader("Access-Control-Allow-Origin", "*");
+            // res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            // res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+            chain.doFilter(req, res); // 다음 필터를 호출합니다.
+            return;
         }
+
+        // if ("OPTIONS".equalsIgnoreCase(method)) { // OPTIONS 메소드인 경우, CORS 요청을 처리합니다.
+        //     System.out.println("debug >> JwtFilter client method is OPTIONS");
+        //     res.setStatus(HttpServletResponse.SC_OK); // 200 OK 응답을 반환합니다.
+        //     res.setHeader("Access-Control-Allow-Origin", "*"); // 허용할 출처를 설정합니다.
+        //     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // 허용할 HTTP 메소드를 설정합니다.
+        //     res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Refresh-Token"); // 허용할 HTTP 헤더를 설정합니다.
+        //     // res.setHeader("Access-Control-Expose-Headers", "Authorization, Refresh-Token"); // 클라이언트가 접근할 수 있는 헤더를 설정합니다.
+        //     // res.setHeader("Access-Control-Allow-Credentials", "true"); // 자격 증명(쿠키 등)을 허용합니다.
+        //     return; // 요청을 종료합니다.
+        // } else {
+        //     System.out.println("debug >> [JWT 검증을 수행] JwtFilter client method is not OPTIONS"); // JWT 검증을 수행합니다.
+            
+        // }
 
 
         // 패스가 /swagger-ui 또는 /v3/api-docs인 경우, JWT 검증을 건너뜁니다.
         if (isPassPath(path)) { // 패스가  또는 인 경우, JWT 검증을 건너뜁니다.
             System.out.println("debug >> 인증이 필요없는 경로입니다. 패스 : " + path);
             System.out.println("debug >> JwtFilter isPassPath() method called" + path);
-            chain.doFilter(req, res); // 다음 필터를 호출합니다.
+            chain.doFilter(request, response); // 다음 필터를 호출합니다.
             return; // 요청을 종료합니다.
             
         }
@@ -111,7 +135,8 @@ public class JwtFilter implements Filter {
                 .parseClaimsJws(token); // JWT를 파싱합니다. Bearer 다음의 JWT를 가져옵니다.
 
                 System.out.println("debug >> 검증성공 -> 컨트롤러로 이동"); // JWT가 유효한 경우, 다음 필터를 호출합니다.
-            
+                // 이 라인을 추가하세요:
+                chain.doFilter(req, res); // 다음 필터를 호출합니다.
                 // String token = authHeader.substring(7); // Bearer 다음의 JWT를 가져옵니다.
             // System.out.println("debug >> JwtFilter token : " + token);
             // JWT 검증 로직을 구현합니다.
@@ -120,6 +145,7 @@ public class JwtFilter implements Filter {
             // jwtProvider.getUserEmail(token); // JWT에서 사용자 이메일을 가져옵니다.
         } catch (Exception e) {
             System.out.println("debug >> 토큰 문제가 생김(403)");
+            System.out.println(e);
             res.setStatus(res.SC_FORBIDDEN); // 401 Unauthorized 응답을 반환합니다.
             res.getWriter().write("Invalid or expired token"); // 응답 본문에 메시지를 추가합니다.
             return; // 요청을 종료합니다.
