@@ -15,10 +15,10 @@ import com.example.demo.service.AuthService;
 
 @RestController
 // @RequestMapping("/")
-@RequestMapping("/api/v1/auth")
-//@CrossOrigin(origins = "*", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> 모든 출처에서 접근 가능하다.
+@RequestMapping("/auth")
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다.
+
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다. // //@CrossOrigin(origins = "*", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> 모든 출처에서 접근 가능하다.
 public class AuthCtrl {
     @Autowired
     private AuthService authService; // @Autowired를 사용하여 AuthService를 주입받는다.
@@ -42,7 +42,7 @@ public class AuthCtrl {
         System.out.println("debug >> Login(ctrl) params : " + params.toString());
         UserResponseDTO response = authService.loginService(params); // service를 호출한다.
         return ResponseEntity.ok()
-                                .header("Authorization", "Bearer"+response.getAccessToken()) // JWT Access Token을 헤더에 추가한다.  
+                                .header("Authorization", "Bearer "+response.getAccessToken()) // JWT Access Token을 헤더에 추가한다.  
                                 .header("Refresh-token", response.getRefreshToken()) // JWT Refresh Token을 헤더에 추가한다.
                                 .body(response); // ResponseEntity를 반환한다.
     }

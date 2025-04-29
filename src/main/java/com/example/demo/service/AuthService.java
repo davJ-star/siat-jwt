@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import org.h2.engine.User;
+// import org.h2.engine.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.AuthRepository;
@@ -28,6 +28,7 @@ public class AuthService {
         String reToken = jwtProvider.generateReToken(params.getEmail()); // JWT Refresh Token 생성
 
 
+        // jpa 방식으로 하려면 entity를 사용해야한다.
         // UserEntity user = authRepository.findById(params.getId()).orElse(null); // ID로 User를 찾는다.
         UserEntity  entity = UserEntity.builder() // UserEntity를 생성한다.
                 .email(params.getEmail()) // email
@@ -37,8 +38,10 @@ public class AuthService {
         
         repository.save(entity); // UserEntity를 저장한다.
 
+
+        // UserResponseDTO를 생성해서 반환한다. -> 지금은 그냥 반환한다.
         UserResponseDTO response = UserResponseDTO.builder()
-                .email(params.getEmail()) // email
+                // .email(params.getEmail()) // email
                 .accessToken(accToken) // access token
                 .refreshToken(reToken) // refresh token
                 .build(); // UserResponseDTO를 생성한다.
