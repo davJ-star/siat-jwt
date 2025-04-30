@@ -1,6 +1,7 @@
 package com.example.demo.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,12 +13,15 @@ import com.example.demo.domain.UserResponseDTO;
 import com.example.demo.domain.entity.UserRequestDTO;
 import com.example.demo.service.AuthService;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 @RestController
 // @RequestMapping("/")
 @RequestMapping("/auth")
 
-
+// 해당 내용도 딱히 필요없을 ㄱ것!
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> localhost:3000에서만 접근 가능하다. // //@CrossOrigin(origins = "*", maxAge = 3600) // CORS 설정을 위한 어노테이션이다. -> 모든 출처에서 접근 가능하다.
 public class AuthCtrl {
     @Autowired
@@ -47,5 +51,32 @@ public class AuthCtrl {
                                 .body(response); // ResponseEntity를 반환한다.
     }
     
-       
+    @PostMapping("/renew") // @RequestMapping("/renew")과 @PostMapping("/renew")은 같은 의미이다.
+    // 현재 endpoint는 /api/v1/auth/renew이다.
+    public ResponseEntity<?> renewToken(HttpServletRequest request) { // @RequestBody 어노테이션을 사용하여 JSON 데이터를 DTO로 변환한다.
+        System.out.println("debug >> renewToken(ctrl) endpoint hit");
+        String header = request.getHeader("Authorization"); // Authorization 헤더를 가져온다.
+        System.out.println("debug >> renewToken(ctrl) header : " + header);
+        String token = header.substring(7); // Bearer를 제외한 JWT Access Token을 가져온다.
+        System.out.println("debug >> renewToken(ctrl) token : " + token);
+
+       try {
+        // JWT Access Token을 검증하고, 유효한 경우 새로운 JWT Access Token을 생성한다.
+        String newToken = authService.renewToken(token); // service를 호출한다.
+
+        // public String renewToken(String token) {} vs public String generateAccToken(String email) {}
+
+        System.out.println("debug >> 재발급 성공!");
+        return ResponseEntity.ok()
+                                .header("Authorization", "Bearer "+newToken) // JWT Access Token을 헤더에 추가한다.  
+                                .build(); // ResponseEntity를 반환한다.
+       } catch (Exception e) {
+        // TODO: handle exception
+            System.out.println("debug >> 재발급 실패!");
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("재발급 실패"); // 401 Unauthorized 응답을 반환한다.
+       }
+
+    }
 }

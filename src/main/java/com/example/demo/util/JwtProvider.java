@@ -33,7 +33,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(email)  // JWT의 subject 설정 (사용자 이메일)
                 .setIssuedAt(new Date()) // JWT 발급 시간 설정
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // JWT 만료 시간 설정 (1시간 후) 1초 * 1000 = 1ms, 1분 * 60 = 1s, 1시간 * 60 = 1m
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2)) // JWT 만료 시간 설정 (1시간 후) 1초 * 1000 = 1ms, 1분 * 60 = 1s, 1시간 * 60 = 1m
                 .signWith(getSigningKey()) // 서명 알고리즘 설정
                 .compact();
 
@@ -72,6 +72,7 @@ public class JwtProvider {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey()) // JWT 서명에 사용할 키를 가져옵니다.
                 .build()
+                // 토큰을 한번더 검증한다.
                 .parseClaimsJws(token) // JWT를 파싱합니다.
                 .getBody() // JWT의 본문을 가져옵니다.
                 .getSubject(); // JWT의 subject를 가져옵니다.

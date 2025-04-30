@@ -12,8 +12,12 @@ import com.example.demo.domain.entity.UserEntity;
 public interface AuthRepository extends JpaRepository<UserEntity, Long> {
     // JpaRepository를 상속받아 CRUD 메소드를 자동으로 생성합니다. // JpaRepository<User, Long>에서 User는 엔티티 클래스, Long은 ID 타입입니다.
     // CRUD 메소드 정의
-    Optional<UserEntity> findById(Long id); // ID로 User를 찾는 메소드
-    Optional<UserEntity> findByEmail(String email); // email로 User를 찾는 메소드
+    public Optional<UserEntity> findById(Long id); // ID로 User를 찾는 메소드
+    public Optional<UserEntity> findByEmail(String email); // email로 User를 찾는 메소드
+
+    // token 하나만 넘겨줘도 되지만, UserEntity를 넘겨줬다.
+    public Optional<UserEntity> findByRefreshToken(String token); // email과 password로 User를 찾는 메소드
+
 
     // CRUD 메소드 정의
     // 예: User findById(Long id);
