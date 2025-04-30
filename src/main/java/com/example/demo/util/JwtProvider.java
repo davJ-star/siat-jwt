@@ -64,4 +64,16 @@ public class JwtProvider {
                 .signWith(getSigningKey()) // 서명 알고리즘 설정
                 .compact();
     }
+
+    public String renewToken(String token) {
+        System.out.println("debug >> JwtProvider renewToken() method called");
+        // JWT Refresh Token 갱신 로직
+        // JWT를 파싱하여 만료 시간을 갱신합니다.
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey()) // JWT 서명에 사용할 키를 가져옵니다.
+                .build()
+                .parseClaimsJws(token) // JWT를 파싱합니다.
+                .getBody() // JWT의 본문을 가져옵니다.
+                .getSubject(); // JWT의 subject를 가져옵니다.
+    }
 }

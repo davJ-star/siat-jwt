@@ -24,14 +24,14 @@ public class UserEntity {
     @Column(name = "id") // column name을 자동으로 생성한다. -> @Column(name = "user_id")로 변경 가능하다.
     private Long id; // ID
 
-    @Column(name = "name") // column name을 자동으로 생성한다. -> @Column(name = "user_name")로 변경 가능하다.
+    @Column(name = "email") // column name을 자동으로 생성한다. -> @Column(name = "user_name")로 변경 가능하다.
     private String email; // email
 
     @Column(name = "password") // column name을 자동으로 생성한다. -> @Column(name = "user_password")로 변경 가능하다.
     private String pwd; // password
 
-    @Column(name = "token") // column name을 자동으로 생성한다. -> @Column(name = "user_token")로 변경 가능하다.
-    private String token; // token
+    @Column(name = "refresh-token") // column name을 자동으로 생성한다. -> @Column(name = "user_token")로 변경 가능하다.
+    private String refreshToken; // token
 
 
 }
