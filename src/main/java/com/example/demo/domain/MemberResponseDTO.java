@@ -42,6 +42,6 @@ public class MemberResponseDTO {
     private String refreshToken; // token
 
     //private List<PostResponseDTO> posts; // member가 쓴 글을 나타냅니다.
-    // private List<PostResponseDTO> posts; // member가 쓴 글을 나타냅니다.
+    private List<PostResponseDTO> posts; // member가 쓴 글을 나타냅니다.
     
 }

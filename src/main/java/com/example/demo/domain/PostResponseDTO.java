@@ -31,6 +31,14 @@ public class PostResponseDTO {
     private Long id; // ID
     private String title; // 제목
     private String content; // 내용
+
+
+    // Constructor to accept PostEntity
+    public PostResponseDTO(PostEntity postEntity) {
+        this.id = postEntity.getId();
+        this.title = postEntity.getTitle();
+        this.content = postEntity.getContent();
+    }
     // //@Id
     // //@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
     // //@Column(name = "id") // column name을 자동으로 생성한다. -> @Column(name = "user_id")로 변경 가능하다.

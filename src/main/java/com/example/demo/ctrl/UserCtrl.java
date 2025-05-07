@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.MemberRequestDTO;
 import com.example.demo.domain.PostRequestDTO;
+import com.example.demo.domain.PostResponseDTO;
 import com.example.demo.domain.UserRequestDTO;
 import com.example.demo.service.UserService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,25 +31,28 @@ public class UserCtrl {
     public ResponseEntity<Void> createUser(@RequestBody MemberRequestDTO params) {
         //TODO: process POST request
         System.out.println("debug >> createUser(ctrl) endpoint hit");
-        userService.createUser(params); // UserService를 호출하여 사용자 생성 요청을 처리한다.
+        userService.createUserService(params); // UserService를 호출하여 사용자 생성 요청을 처리한다.
         
         return ResponseEntity.noContent().build(); // ResponseEntity를 반환한다.
     }
     
     @PostMapping("/{id}/post")
-    public String createPost(@PathVariable("id") Long userId, @RequestBody PostRequestDTO params) { // 이렇게 쓸때 pathvariable을 사용하는 것이 좋다. -> @PathVariable(name = "id")
+    // @PathVariable("id")
+    public ResponseEntity<PostResponseDTO> createPost(@PathVariable("id") String userId, @RequestBody PostRequestDTO params) { // 이렇게 쓸때 pathvariable을 사용하는 것이 좋다. -> @PathVariable(name = "id")
         //TODO: process POST request
         System.out.println("debug >> createPost(ctrl) endpoint hit");
-        userService.createPost(params); // UserService를 호출하여 사용자 생성 요청을 처리한다.
+        PostResponseDTO response =  userService.createPostService(userId, params); // UserService를 호출하여 사용자 생성 요청을 처리한다.
         
-        return null;
+        return ResponseEntity.ok().body(response); // ResponseEntity를 반환한다.
     }
     @PostMapping("/{id}/list")
-    public String getUserPosts(@PathVariable(name = "id") Long userId) { // 이렇게 쓸때 pathvariable을 사용하는 것이 좋다.
+    public ResponseEntity<List<PostResponseDTO>> getUserPosts(@PathVariable(name = "id") String userId) { // 이렇게 쓸때 pathvariable을 사용하는 것이 좋다.
         //TODO: process POST request
         System.out.println("debug >> getUserPosts(ctrl) endpoint hit");
+        // Member를 토대로 해당 사용자의 post를 가져오는 것.
+        List<PostResponseDTO> lst =  userService.getUserPostService(userId); // UserService를 호출하여 사용자 생성 요청을 처리한다.
         
-        return null;
+        return ResponseEntity.ok().body(lst); // ResponseEntity를 반환한다.
     }
     
     // @PostMapping("/user")

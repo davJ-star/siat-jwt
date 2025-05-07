@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.demo.domain.PostResponseDTO;
 
+import jakarta.persistence.CascadeType;
 //import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,11 +59,18 @@ public class MemberEntity {
 
     // OneToMany는 member가 쓴 글을 나타냅니다.또는 그냥 PostEntity로 해도 된다.
     //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // cascade = CascadeType.ALL // cascade = CascadeType.ALL은 연관된 엔티티를 함께 저장, 삭제하는 옵션입니다.
-    @OneToMany // (cascade = CascadeType.ALL, orphanRemoval = true) // cascade = CascadeType.ALL // cascade = CascadeType.ALL은 연관된 엔티티를 함께 저장, 삭제하는 옵션입니다.
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // cascade = CascadeType.ALL // cascade = CascadeType.ALL은 연관된 엔티티를 함께 저장, 삭제하는 옵션입니다.
     @JoinColumn(name = "member_id") // member_id를 외래 키로 사용합니다.
     // @JoinColumn은 연관관계의 주인 쪽에서 사용합니다.
     private List<PostEntity> posts = new ArrayList<>(); // member가 쓴 글을 나타냅니다. 
     //private List<PostResponseDTO> posts = new ArrayList<>(); // member가 쓴 글을 나타냅니다. 
+
+    // MemberEntity가 주인이므로, PostEntity를 주체로 하는 연관관계입니다.
+    // member가 쓴 글을 나타내는 List<PostEntity> posts를 추가합니다.
+    // member를 토대로 글을
+    public void addPost(PostEntity post) {
+        posts.add(post); // 글을 추가합니다.
+    }
 }
 /*
  * @Id // 기본 키를 나타냅니다.
