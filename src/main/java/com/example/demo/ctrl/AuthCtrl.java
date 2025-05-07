@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.domain.UserRequestDTO;
 import com.example.demo.domain.UserResponseDTO;
-import com.example.demo.domain.entity.UserRequestDTO;
 import com.example.demo.service.AuthService;
 
 import jakarta.servlet.http.HttpServlet;

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.AuthRepository;
+import com.example.demo.domain.UserRequestDTO;
 import com.example.demo.domain.UserResponseDTO;
 import com.example.demo.domain.entity.UserEntity;
-import com.example.demo.domain.entity.UserRequestDTO;
 import com.example.demo.util.JwtProvider;
 
 @Service

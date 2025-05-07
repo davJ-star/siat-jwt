@@ -7,7 +7,6 @@ import java.security.Key;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.example.demo.ctrl.ApiCtrl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -18,8 +17,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import oracle.jdbc.proxy.annotation.Post;
-import oracle.net.aso.c;
+
 
 @Component
 // @Order(1) // 필터의 순서를 지정합니다. 숫자가 낮을수록 우선순위가 높습니다.
@@ -170,7 +168,10 @@ public class JwtFilter implements Filter {
                 path.startsWith("/swagger-ui") || 
                 //path.startsWith("/api") ||  
                 path.startsWith("/h2-console") ||    
-                path.startsWith("/auth"); 
+                path.startsWith("/auth") ||  
+                path.startsWith("/auth/login") ||
+                path.startsWith("/auth/renew") ||
+                path.startsWith("/user");
             // auth/login 또는 auth/register인 경우, JWT 검증을 건너뜁니다.
     }
     
