@@ -148,6 +148,12 @@ public class JwtFilter implements Filter {
             System.out.println(e);
             res.setStatus(res.SC_FORBIDDEN); // 401 Unauthorized 응답을 반환합니다.
             res.getWriter().write("Invalid or expired token"); // 응답 본문에 메시지를 추가합니다.
+            res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+            res.setHeader("Access-Control-Allow-Credentials", "true"); // 자격 증명(쿠키 등)을 허용합니다.
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // 허용할 출처를 설정합니다.
+
+
             return; // 요청을 종료합니다.
         }
 
