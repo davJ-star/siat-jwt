@@ -246,7 +246,7 @@ public class UserService {
         // 일단 저장하면 될텐데, 일단 멤버를 토대로 다시 저장하는게 중요하다.
         // 
         member.deletePost(post.get());
-        memberRepository.save(member);
+        // memberRepository.save(member);
 
         /*
          *  if (op.isPresent()) { // User가 존재하면 -> refresh token이 있다.
