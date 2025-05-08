@@ -240,6 +240,14 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException("not found"))
         ;
 
+        // 나는 직접 꺼내오진 않았다.
+        // PostEntity p = member.getPosts().stream()
+        //                     .filter(post -> post.getId().equals(postId))
+        //                     .findFirst()
+        //                     .orElseThrow(() -> new RuntimeException("not found"));
+
+        // member.getPosts().remove(p);
+
         // 해당 하는 memberEntity를 가져 왔다. 여기서 해당하는 postId를 찾는다. 
         Optional<PostEntity> post = member.findPost(postId); // 리스트에 있는 것을 가져온 것이다.
         // 그러면 어떻게 설정하면 되는가?
