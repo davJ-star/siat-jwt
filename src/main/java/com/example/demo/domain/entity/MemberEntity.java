@@ -2,6 +2,7 @@ package com.example.demo.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.domain.PostResponseDTO;
 
@@ -70,6 +71,17 @@ public class MemberEntity {
     // member를 토대로 글을
     public void addPost(PostEntity post) {
         posts.add(post); // 글을 추가합니다.
+    }
+
+    public Optional<PostEntity> findPost(Long id) {
+        System.out.println("findPost() called with id: " + id); // 디버깅을 위한 로그 출력
+        return posts.stream()
+                        .filter(post -> post.getId().equals(id)) // 글 ID로 필터링합니다.
+                        .findFirst(); // 첫 번째 요소를 찾습니다.
+                        // .orElse(null); // 없으면 null을 반환합니다.
+    }
+    public void deletePost(PostEntity post) {
+        posts.remove(post);
     }
 }
 /*

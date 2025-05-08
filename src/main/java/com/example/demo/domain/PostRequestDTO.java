@@ -14,7 +14,7 @@ import lombok.ToString;
 // import jakarta.persistence.Column;
 // import jakarta.persistence.GeneratedValue;
 // import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
+import jakarta.persistence.Id;
 
 
 @Builder
@@ -28,10 +28,10 @@ public class PostRequestDTO {
     private String title; // 제목
     private String content; // 내용
 
-    // //@Id
+    //@Id
     // //@GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
     // //@Column(name = "id") // column name을 자동으로 생성한다. -> @Column(name = "user_id")로 변경 가능하다.
-    // private Long id; // ID
+    private Long id; // ID
 
     // //@Column(name = "name") // column name을 자동으로 생성한다. -> @Column(name = "user_name")로 변경 가능하다.
     // private String email; // email
