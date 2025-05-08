@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.entity.JpaSampleEntity;
 import com.example.demo.domain.entity.PostEntity;
+import java.util.List;
+
 
 @Repository
 public interface JpaSampleRepository extends JpaRepository<JpaSampleEntity, String> {
     // public Optional<PostEntity> findById(Long id); // ID로 Post를 찾는 메소드
+    public Optional<JpaSampleEntity> findByUserIdAndPasswd(String userId, String passWd);
+    
 }

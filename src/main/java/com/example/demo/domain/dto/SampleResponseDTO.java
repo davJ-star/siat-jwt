@@ -1,5 +1,5 @@
 package com.example.demo.domain.dto;
 
-public class JpaSampleResponseDTO {
+public class SampleResponseDTO {
     
 }
