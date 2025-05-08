@@ -62,7 +62,7 @@ public class JpaCtrl {
         String accToken = jwtProvider.generateAccToken(params.get("userId")); // JWT Access Token 생성
         String reToken = jwtProvider.generateReToken(params.get("userId")); // JWT Refresh Token 생성
         // 아이디와 패스워드
-        jpaSampleRepository.findByUserIdAndPasswd(params.get("userId"), params.get("userPassWd"))
+        jpaSampleRepository.findByUserIdAndPasswd(params.get("userId"), params.get("passwd"))
                                 .orElseThrow(()->new RuntimeException("not found"));
         // 데이터 유효성을 체크한뒤 setter를 쓰는건 괜찮다. 
         
