@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,11 @@ public class PostEntity {
     // 멤버로 활용해야하지 않나?
 
     @Id // 기본 키를 나타냅니다.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략을 사용합니다.
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략을 사용합니다.
+
+    // oracle version
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_seq_gen") // 자동 증가 전략을 사용합니다.
+    @SequenceGenerator(name = "post_seq_gen", sequenceName = "post_seq", allocationSize = 1)
     private Long id; // ID
 
     private String title; // 제목
