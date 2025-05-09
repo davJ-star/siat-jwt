@@ -1,14 +1,21 @@
 package com.example.demo.ctrl;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
+import org.apache.ibatis.javassist.tools.reflect.Sample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.JpaSampleRepository;
+import com.example.demo.domain.dto.SampleResponseDTO;
 import com.example.demo.domain.entity.JpaSampleEntity;
 import com.example.demo.util.JwtProvider;
 
@@ -182,6 +189,46 @@ public class JpaCtrl {
               "refreshToken", reToken
             );
          */
+    }
+// 우선 지금 pathvariable로 가져온다.
+    @GetMapping("/list")
+    public ResponseEntity<List<JpaSampleEntity>>  list() { // 원래는 requestDTO를 걸어주는게 맞긴하다.
+        //TODO: process POST request
+        System.out.println("debug >> list(ctrl) endpoint hit");
+
+        // // 우선 해당하는 값을 가져온다. 
+
+        // 일단 전체를 가져오면될 것 같다.
+        // 하나도 없는 경우도 체크가 필요하긴 할 듯한데..?
+        List<JpaSampleEntity> lst = jpaSampleRepository.findAll();
+        
+        
+        
+        // JpaSampleEntity entity = jpaSampleRepository.findById(id)
+        //     .orElseThrow(() -> new RuntimeException("not found"));
+
+        
+        // // 여기서 일단 삭제하기. 
+        // // 해당값은 일단 repository에서 삭제하는게 맞을듯함.
+        // jpaSampleRepository.delete(entity);
+
+        // 아래와 같이 진행하셨다.
+        // jpaSampleRepository.deleteById(id);
+
+        // // 모든 컬럼에 대해 컬럼이 변경된다. 
+        // JpaSampleEntity entity1 = JpaSampleEntity.builder()
+        //                             .userId(params.get("user_id"))
+        //                             .passwd(params.get("user_passwd"))
+        //                             .name(params.get("user_name"))
+        //                             .build();
+        
+        // jpaSampleRepository.save(entity1);
+
+
+        
+        // 일단 반환하는 코드랑 리스트 비어있을때 체크     
+        return new ResponseEntity<List<JpaSampleEntity>>(lst, HttpStatus.ACCEPTED);
+        
     }
 
 
