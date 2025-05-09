@@ -96,32 +96,36 @@ public class JpaCtrl {
     }
 
     @PutMapping("/update")
+    // Dirty checking(변경 감지)
+    // -> jpql
+    // -> dynamic insert등을 해보기
     @Transactional
-    // dto를 만들지 않아도 된다.
-    // 그리고 Object를 떠올려라. -> 타입캐스팅과 다양성을 위해서.
     public String update(@RequestBody Map<String, String> params) { // 원래는 requestDTO를 걸어주는게 맞긴하다.
         //TODO: process POST request
         System.out.println("debug >> update(ctrl) endpoint hit");
 
-        // // entity 정보를 가져온다. -> 없는 경우 .orElseThrow(() -> new RuntimeException("not found")); // 근데 해당 코드로 하면ㄷ안됨...
-        // // 일단 둘다받는경우를 생각하나?
-        // JpaSampleEntity entity = jpaSampleRepository.findById(params.get("user_id"))
-        //                     .orElseThrow(() -> new RuntimeException("not found"));
-        // // 아래는 있는 경우에만 실행된다. ->  
-        // entity.setPasswd(params.get("user_passwd"));
-        // jpaSampleRepository.save(entity);
+        // entity 정보를 가져온다. -> 없는 경우 .orElseThrow(() -> new RuntimeException("not found")); // 근데 해당 코드로 하면ㄷ안됨...
+        // 일단 user_id는 일단 기존에 있는걸로 진행한다.
+        JpaSampleEntity entity = jpaSampleRepository.findById(params.get("user_id"))
+                            .orElseThrow(() -> new RuntimeException("not found"));
+        // 아래는 있는 경우에만 실행된다. ->  
+        entity.setPasswd(params.get("user_passwd"));
+        entity.setName(params.get("user_name"));
+        ////////////// 아래를 진행하지 않았다면, 
 
-        // 모든 컬럼에 대해 컬럼이 변경된다. 
-        JpaSampleEntity entity1 = JpaSampleEntity.builder()
-                                    .userId(params.get("user_id"))
-                                    .passwd(params.get("user_passwd"))
-                                    .name(params.get("user_name"))
-                                    .build();
+        //jpaSampleRepository.save(entity);
+
+        // // 모든 컬럼에 대해 컬럼이 변경된다. 
+        // JpaSampleEntity entity1 = JpaSampleEntity.builder()
+        //                             .userId(params.get("user_id"))
+        //                             .passwd(params.get("user_passwd"))
+        //                             .name(params.get("user_name"))
+        //                             .build();
         
-        jpaSampleRepository.save(entity1);
+        // jpaSampleRepository.save(entity1);
 
 
-        // Dirty checking(변경 감지)
+        
 
         return null;
         /*
