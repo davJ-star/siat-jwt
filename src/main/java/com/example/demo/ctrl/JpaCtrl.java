@@ -14,7 +14,9 @@ import com.example.demo.util.JwtProvider;
 
 import jakarta.transaction.Transactional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -115,7 +117,7 @@ public class JpaCtrl {
 
         //jpaSampleRepository.save(entity);
 
-        
+
         jpaSampleRepository.updateRow(params.get("user_id"), params.get("user_passwd"), params.get("user_name"));
 
 
@@ -142,7 +144,44 @@ public class JpaCtrl {
          */
     }
     
+    // 우선 지금 pathvariable로 가져온다.
+    @DeleteMapping("/delete/{userId}")
+    public String delete(@PathVariable("userId") String id) { // 원래는 requestDTO를 걸어주는게 맞긴하다.
+        //TODO: process POST request
+        System.out.println("debug >> delete(ctrl) endpoint hit");
 
+        // 우선 해당하는 값을 가져온다. 
+        JpaSampleEntity entity = jpaSampleRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("not found"));
+
+        
+        // 여기서 일단 삭제하기. 
+        // 해당값은 일단 repository에서 삭제하는게 맞을듯함.
+        jpaSampleRepository.delete(entity);
+
+        
+
+        // // 모든 컬럼에 대해 컬럼이 변경된다. 
+        // JpaSampleEntity entity1 = JpaSampleEntity.builder()
+        //                             .userId(params.get("user_id"))
+        //                             .passwd(params.get("user_passwd"))
+        //                             .name(params.get("user_name"))
+        //                             .build();
+        
+        // jpaSampleRepository.save(entity1);
+
+
+        
+
+        return null;
+        /*
+         * 
+         * return Map.of(
+                "accessToken", accToken,
+              "refreshToken", reToken
+            );
+         */
+    }
 
 
 
