@@ -40,6 +40,11 @@ dependencies {
 	// openssl rand -hex 64
 	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
+
+	// JSR - validation -> mvnrepository.com에서 찾아본다.
+	// JSR 303 - Validation: Bean Validation 1.0
+	implementation group: 'org.springframework.boot', name : 'spring-boot-starter-validation'
+
 	
 
 

@@ -172,7 +172,9 @@ public class JwtFilter implements Filter {
                 path.startsWith("/auth/login") ||
                 path.startsWith("/auth/renew") ||
                 path.startsWith("/user") ||
-                path.startsWith("/jpa")
+                path.startsWith("/jpa") ||
+                path.startsWith("/forcast") 
+
                 ;
             // auth/login 또는 auth/register인 경우, JWT 검증을 건너뜁니다.
     }
