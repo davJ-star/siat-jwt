@@ -35,5 +35,11 @@ public class SampleResponseDTO {
         this.point = entity.getPoint();
         this.refreshToken = entity.getRefreshToken();
      }
+     // 
+     public SampleResponseDTO(String userId, String passwd, String name) {
+        this.userId = userId;
+        this.passwd = passwd;
+        this.name = name;
+     }
 
 }

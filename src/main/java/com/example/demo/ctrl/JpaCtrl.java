@@ -205,10 +205,12 @@ public class JpaCtrl {
         // List<SampleResponseDTO> result = lst.stream()
         //                             .map(SampleResponseDTO::new) // 변환 생성자 사용
         //                             .collect(Collectors.toList());
-        List<SampleResponseDTO> result = lst.stream()
-                                    .map(SampleResponseDTO::new) // 변환 생성자 사용
-                                    .toList();
+        // List<SampleResponseDTO> result2 = lst.stream()
+        //                             .map(SampleResponseDTO::new) // 변환 생성자 사용
+        //                             .toList();
 
+
+        List<SampleResponseDTO> result = jpaSampleRepository.findByAll();                                            
         // List<SampleResponseDTO> dtoList = lst.stream()
         //                                         .map(entity -> SampleResponseDTO.builder()
         //                                             .userId(entity.getUserId())
