@@ -106,14 +106,19 @@ public class JpaCtrl {
 
         // entity 정보를 가져온다. -> 없는 경우 .orElseThrow(() -> new RuntimeException("not found")); // 근데 해당 코드로 하면ㄷ안됨...
         // 일단 user_id는 일단 기존에 있는걸로 진행한다.
-        JpaSampleEntity entity = jpaSampleRepository.findById(params.get("user_id"))
-                            .orElseThrow(() -> new RuntimeException("not found"));
-        // 아래는 있는 경우에만 실행된다. ->  
-        entity.setPasswd(params.get("user_passwd"));
-        entity.setName(params.get("user_name"));
+        // JpaSampleEntity entity = jpaSampleRepository.findById(params.get("user_id"))
+        //                     .orElseThrow(() -> new RuntimeException("not found"));
+        // // 아래는 있는 경우에만 실행된다. ->  
+        // entity.setPasswd(params.get("user_passwd"));
+        // entity.setName(params.get("user_name"));
         ////////////// 아래를 진행하지 않았다면, 
 
         //jpaSampleRepository.save(entity);
+
+        
+        jpaSampleRepository.updateRow(params.get("user_id"), params.get("user_passwd"), params.get("user_name"));
+
+
 
         // // 모든 컬럼에 대해 컬럼이 변경된다. 
         // JpaSampleEntity entity1 = JpaSampleEntity.builder()
