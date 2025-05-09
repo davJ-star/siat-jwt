@@ -192,7 +192,7 @@ public class JpaCtrl {
     }
 // 우선 지금 pathvariable로 가져온다.
     @GetMapping("/list")
-    public ResponseEntity<List<JpaSampleEntity>>  list() { // 원래는 requestDTO를 걸어주는게 맞긴하다.
+    public ResponseEntity<List<SampleResponseDTO>>  list() { // 원래는 requestDTO를 걸어주는게 맞긴하다.
         //TODO: process POST request
         System.out.println("debug >> list(ctrl) endpoint hit");
 
@@ -202,8 +202,20 @@ public class JpaCtrl {
         // 하나도 없는 경우도 체크가 필요하긴 할 듯한데..?
         List<JpaSampleEntity> lst = jpaSampleRepository.findAll();
         
-        
-        
+        // List<SampleResponseDTO> dtoList = lst.stream()
+        //                             .map(SampleResponseDTO::new) // 변환 생성자 사용
+        //                             .collect(Collectors.toList());
+
+        List<SampleResponseDTO> dtoList = lst.stream()
+                                                .map(entity -> SampleResponseDTO.builder()
+                                                    .userId(entity.getUserId())
+                                                    .passwd(entity.getPasswd())
+                                                    .name(entity.getName())
+                                                    .refreshToken(entity.getRefreshToken())
+                                                    .build())
+                                                .collect(Collectors.toList());
+
+
         // JpaSampleEntity entity = jpaSampleRepository.findById(id)
         //     .orElseThrow(() -> new RuntimeException("not found"));
 
@@ -227,7 +239,7 @@ public class JpaCtrl {
 
         
         // 일단 반환하는 코드랑 리스트 비어있을때 체크     
-        return new ResponseEntity<List<JpaSampleEntity>>(lst, HttpStatus.ACCEPTED);
+        return new ResponseEntity<List<SampleResponseDTO>>(dtoList, HttpStatus.ACCEPTED);
         
     }
 
