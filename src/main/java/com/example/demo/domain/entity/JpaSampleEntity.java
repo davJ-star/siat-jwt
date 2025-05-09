@@ -37,6 +37,9 @@ public class JpaSampleEntity {
     @Column(name = "user_name", length = 50, nullable = false)
     private String name;
     
+    @Column(name = "user_point")
+    private Integer point;
+    
     @Column(name = "user_token")
     private String refreshToken;
     

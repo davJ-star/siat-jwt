@@ -202,18 +202,21 @@ public class JpaCtrl {
         // 하나도 없는 경우도 체크가 필요하긴 할 듯한데..?
         List<JpaSampleEntity> lst = jpaSampleRepository.findAll();
         
-        // List<SampleResponseDTO> dtoList = lst.stream()
+        // List<SampleResponseDTO> result = lst.stream()
         //                             .map(SampleResponseDTO::new) // 변환 생성자 사용
         //                             .collect(Collectors.toList());
+        List<SampleResponseDTO> result = lst.stream()
+                                    .map(SampleResponseDTO::new) // 변환 생성자 사용
+                                    .toList();
 
-        List<SampleResponseDTO> dtoList = lst.stream()
-                                                .map(entity -> SampleResponseDTO.builder()
-                                                    .userId(entity.getUserId())
-                                                    .passwd(entity.getPasswd())
-                                                    .name(entity.getName())
-                                                    .refreshToken(entity.getRefreshToken())
-                                                    .build())
-                                                .collect(Collectors.toList());
+        // List<SampleResponseDTO> dtoList = lst.stream()
+        //                                         .map(entity -> SampleResponseDTO.builder()
+        //                                             .userId(entity.getUserId())
+        //                                             .passwd(entity.getPasswd())
+        //                                             .name(entity.getName())
+        //                                             .refreshToken(entity.getRefreshToken())
+        //                                             .build())
+        //                                         .collect(Collectors.toList());
 
 
         // JpaSampleEntity entity = jpaSampleRepository.findById(id)
@@ -239,8 +242,9 @@ public class JpaCtrl {
 
         
         // 일단 반환하는 코드랑 리스트 비어있을때 체크     
-        return new ResponseEntity<List<SampleResponseDTO>>(dtoList, HttpStatus.ACCEPTED);
-        
+        // return new ResponseEntity<List<SampleResponseDTO>>(dtoList, HttpStatus.ACCEPTED);
+        return ResponseEntity.ok().body(result);
+
     }
 
 
