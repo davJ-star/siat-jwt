@@ -2,10 +2,11 @@ package com.example.demo.dao;
 
 import java.util.Optional;
 
-import org.apache.ibatis.annotations.Param;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.entity.JpaSampleEntity;
@@ -21,7 +22,13 @@ public interface JpaSampleRepository extends JpaRepository<JpaSampleEntity, Stri
     @Modifying
     //@Query("UPDATE SIAT_JPA_SAMPLE_TBL SET user_passwd = ? , user_name = ? WHERE user_id = ?")
     // 테이블 별칭을 활용해야하고 ?가 아니라 :별칭이 필요하다.
-    @Query("UPDATE SIAT_JPA_SAMPLE_TBL U SET U.user_passwd = :passwd, U.user_name = :name WHERE U.user_id = :userId") // userId
+
+    // 엔티티 기존으로 체크하고 필드명이랑 일치시켜한다. 
+    // 또한 일단 map에서 key값과 requestBody의 key값이 동일해야한다.
+    @Query( "UPDATE JpaSampleEntity U "  
+            + "SET U.passwd = :passwd, U.name = :name " 
+            + "WHERE U.userId = :userId"
+            ) // userId
     public void updateRow(  @Param("userId") String userId, // userId
                             @Param("passwd") String passwd,
                             @Param("name") String name);
