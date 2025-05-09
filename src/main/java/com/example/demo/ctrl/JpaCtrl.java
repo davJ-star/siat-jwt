@@ -150,16 +150,17 @@ public class JpaCtrl {
         //TODO: process POST request
         System.out.println("debug >> delete(ctrl) endpoint hit");
 
-        // 우선 해당하는 값을 가져온다. 
-        JpaSampleEntity entity = jpaSampleRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("not found"));
+        // // 우선 해당하는 값을 가져온다. 
+        // JpaSampleEntity entity = jpaSampleRepository.findById(id)
+        //     .orElseThrow(() -> new RuntimeException("not found"));
 
         
-        // 여기서 일단 삭제하기. 
-        // 해당값은 일단 repository에서 삭제하는게 맞을듯함.
-        jpaSampleRepository.delete(entity);
+        // // 여기서 일단 삭제하기. 
+        // // 해당값은 일단 repository에서 삭제하는게 맞을듯함.
+        // jpaSampleRepository.delete(entity);
 
-        
+        // 아래와 같이 진행하셨다.
+        jpaSampleRepository.deleteById(id);
 
         // // 모든 컬럼에 대해 컬럼이 변경된다. 
         // JpaSampleEntity entity1 = JpaSampleEntity.builder()
