@@ -10,7 +10,7 @@ public class ForcastRequestDTO {
     private String beach_num;
     // @NotNull(message = "발표일자가 없습니다.")
     @NotNull(message = "발표일자가 없습니다. ) 20220622")
-    private String baes_date;
+    private String base_date;
     // @NotNull(message = "발표시각이 없습니다.")
     @NotNull(message = "발표시각이 없습니다. ) 1230")
     private String base_time;
